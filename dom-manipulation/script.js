@@ -1,24 +1,23 @@
 const showQuoteBtn = document.getElementById("newQuote");
 const quoteObj = [
   {
-    quote:
-      "Don't wait for the perfect moment. Take the moment and make it perfect.",
+    text: "Don't wait for the perfect moment. Take the moment and make it perfect.",
     category: "Motivation",
   },
   {
-    quote: "Life is short. Smile while you still have teeth.",
+    text: "Life is short. Smile while you still have teeth.",
     category: "Humor",
   },
   {
-    quote: "The only way to do great work is to love what you do.",
+    text: "The only way to do great work is to love what you do.",
     category: "Inspiration",
   },
   {
-    quote: "Your vibe attracts your tribe.",
+    text: "Your vibe attracts your tribe.",
     category: "Self-Development",
   },
   {
-    quote: "The best view comes after the hardest climb.",
+    text: "The best view comes after the hardest climb.",
     category: "Perseverance",
   },
 ];
@@ -30,7 +29,7 @@ const displayRandomQuote = function () {
   let showRandomQuote = quoteObj[randomIndex];
 
   const newItem = document.createElement("p");
-  newItem.innerHTML = `${showRandomQuote.quote} - ${showRandomQuote.category}`;
+  newItem.innerHTML = `${showRandomQuote.text} - ${showRandomQuote.category}`;
   newItem.id = "quote-paragraph"; //Giving paragraph element an ID
   quoteDisplayContainer.appendChild(newItem);
 };
@@ -56,7 +55,7 @@ const addQuote = function () {
 
   if (newQuoteText.value !== "" && newQuoteCategory.value !== "") {
     let newQuoteObject = {
-      quote: newQuoteText.value,
+      text: newQuoteText.value,
       category: newQuoteCategory.value,
     };
 
