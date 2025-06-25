@@ -30,7 +30,7 @@ const displayRandomQuote = function () {
   let showRandomQuote = quoteObj[randomIndex];
 
   const newItem = document.createElement("p");
-  newItem.textContent = `${showRandomQuote.quote} - ${showRandomQuote.category}`;
+  newItem.innerHTML = `${showRandomQuote.quote} - ${showRandomQuote.category}`;
   newItem.id = "quote-paragraph"; //Giving paragraph element an ID
   quoteDisplayContainer.appendChild(newItem);
 };
@@ -38,7 +38,7 @@ const displayRandomQuote = function () {
 const clearRandomQote = function () {
   const quotePara = document.getElementById("quote-paragraph");
   if (quotePara) {
-    quotePara.textContent = "";
+    quotePara.innerHTML = "";
   }
 };
 
