@@ -23,7 +23,7 @@ const quoteObj = [
 ];
 
 //   Display random Quote
-const displayRandomQuote = function () {
+const createAddQuoteForm = function () {
   const quoteDisplayContainer = document.getElementById("quoteDisplay");
   let randomIndex = Math.floor(Math.random() * quoteObj.length);
   let showRandomQuote = quoteObj[randomIndex];
@@ -43,7 +43,7 @@ const clearRandomQote = function () {
 
 //   Add event listener to show new quote button
 showQuoteBtn.addEventListener("click", function () {
-  displayRandomQuote();
+  createAddQuoteForm();
 
   setTimeout(clearRandomQote, 2000); // clear quote display container after 2 seconds
 });
