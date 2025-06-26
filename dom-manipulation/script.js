@@ -1,6 +1,9 @@
 const showQuoteBtn = document.getElementById("newQuote");
+const quoteDisplayContainer = document.getElementById("quoteDisplay");
+const select = document.getElementById("categoryFilter");
 //When the page loads, try to get the existing quotes from local storage
 let quoteObj = JSON.parse(localStorage.getItem("quoteItem")) || [];
+populateCategories(); // Call populate categories after fetching local storage quotes
 
 // If not an array reset it
 if (!Array.isArray(quoteObj)) {
@@ -10,8 +13,6 @@ if (!Array.isArray(quoteObj)) {
 
 //   Display random Quote
 const createAddQuoteForm = function () {
-  const quoteDisplayContainer = document.getElementById("quoteDisplay");
-
   //   check if there any quotes
   if (quoteObj.length === 0) {
     quoteDisplayContainer.innerHTML = "There are no quotes to display";
@@ -62,7 +63,7 @@ const addQuote = function () {
     };
 
     quoteObj.push(newQuoteObject); // push new quote to the array
-
+    populateCategories(); //Populate new categories if added
     saveQuotes(); //saving the updated quote object to local storage
 
     // clear users input
@@ -77,6 +78,8 @@ function importFromJsonFile(event) {
   fileReader.onload = function (event) {
     const importedQuotes = JSON.parse(event.target.result);
     quoteObj.push(...importedQuotes); // push imported quotes to my quote object
+
+    populateCategories();
     saveQuotes();
     alert("Quotes imported successfully!");
   };
@@ -84,9 +87,6 @@ function importFromJsonFile(event) {
 }
 
 //Downloading quotes
-//   create an button element
-// const downloadBtn = document.createElement("button");
-// downloadBtn.textContent = "Download Quotes";
 const exportBtn = document.getElementById("exportQuotes");
 exportBtn.addEventListener("click", function () {
   // Data to download
@@ -114,9 +114,53 @@ exportBtn.addEventListener("click", function () {
   //clear link
   document.body.removeChild(link);
 });
-document.body.appendChild(downloadBtn);
 
 //Listen when a new file is added
 document
   .getElementById("importFile")
   .addEventListener("change", importFromJsonFile);
+
+//function to Populate Categories Dynamically
+function populateCategories() {
+  // Keep only the first option ("All Categories"), remove the rest
+  select.innerHTML = '<option value="all">All Categories</option>';
+
+  let categoriesArr = [];
+
+  quoteObj.forEach((element) => {
+    if (!categoriesArr.includes(element.category)) {
+      categoriesArr.push(element.category);
+    }
+  });
+
+  categoriesArr.forEach((optionItem) => {
+    const option = document.createElement("option");
+    option.value = optionItem;
+    option.textContent = optionItem;
+    select.appendChild(option);
+  });
+}
+
+//function to filter Quotes Based on Selected Category
+function filterQuotes() {
+  let selectedOption = select.value;
+  if (selectedOption === "all") {
+    // show all quotw
+    quoteObj.forEach((element) => {
+      let paragraphItem = document.createElement("p");
+      paragraphItem.textContent = `${element.text} -${element.category}`;
+      quoteDisplayContainer.append(paragraphItem);
+    });
+  } else {
+    // show elements based on category
+    let results = quoteObj.filter((item) => {
+      return item.category === selectedOption;
+    });
+
+    for (let index = 0; index < results.length; index++) {
+      let paragraphItem = document.createElement("p");
+      paragraphItem.textContent = `${results[index].text} -${results[index].category}`;
+      quoteDisplayContainer.appendChild(paragraphItem);
+    }
+  }
+}
