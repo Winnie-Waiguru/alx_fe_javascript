@@ -85,9 +85,10 @@ function importFromJsonFile(event) {
 
 //Downloading quotes
 //   create an button element
-const downloadBtn = document.createElement("button");
-downloadBtn.textContent = "Download Quotes";
-downloadBtn.addEventListener("click", function () {
+// const downloadBtn = document.createElement("button");
+// downloadBtn.textContent = "Download Quotes";
+const exportBtn = document.getElementById("exportQuotes");
+exportBtn.addEventListener("click", function () {
   // Data to download
   // Data in the quoteObj
   const filename = "quotes.json";
