@@ -74,6 +74,7 @@ const addQuote = function () {
 
     quoteObj.push(newQuoteObject); // push new quote to the array
     populateCategories(); //Populate new categories if added
+    filterQuotes();
     saveQuotes(); //saving the updated quote object to local storage
 
     // clear users input
@@ -90,6 +91,7 @@ function importFromJsonFile(event) {
     quoteObj.push(...importedQuotes); // push imported quotes to my quote object
 
     populateCategories();
+    filterQuotes();
     saveQuotes();
     alert("Quotes imported successfully!");
   };
@@ -132,6 +134,9 @@ document
 
 //function to Populate Categories Dynamically
 function populateCategories() {
+  // Retrieve last saved category
+  const savedCategory = localStorage.getItem("lastSelectedCategory");
+
   // Keep only the first option ("All Categories"), remove the rest
   select.innerHTML = '<option value="all">All Categories</option>';
 
@@ -149,6 +154,16 @@ function populateCategories() {
     option.textContent = optionItem;
     select.appendChild(option);
   });
+
+  //Restore saved category if it still exsist
+  if (
+    savedCategory &&
+    (savedCategory === "all" || categoriesArr.includes(savedCategory))
+  ) {
+    select.value = savedCategory;
+  } else {
+    select.value = "all";
+  }
 }
 
 //function to filter Quotes Based on Selected Category
