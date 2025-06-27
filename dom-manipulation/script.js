@@ -1,3 +1,13 @@
+document.addEventListener("DOMContentLoaded", function () {
+  // get last selected value
+  let savedCategory = localStorage.getItem("lastSelectedCategory");
+  // Display  quotes based on the last selected Category
+  if (savedCategory) {
+    select.value = savedCategory;
+  }
+  filterQuotes();
+});
+
 const showQuoteBtn = document.getElementById("newQuote");
 const quoteDisplayContainer = document.getElementById("quoteDisplay");
 const select = document.getElementById("categoryFilter");
@@ -166,3 +176,9 @@ function filterQuotes() {
     }
   }
 }
+
+// add event listener to select to store selected values
+select.addEventListener("change", function () {
+  localStorage.setItem("lastSelectedCategory", select.value);
+  filterQuotes();
+});
