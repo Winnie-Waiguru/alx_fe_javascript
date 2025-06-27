@@ -177,8 +177,11 @@ function filterQuotes() {
   }
 }
 
-// add event listener to select to store selected values
-select.addEventListener("change", function () {
-  localStorage.setItem("lastSelectedCategory", select.value);
+// Display last selected Category
+function selectedCategory() {
+  localStorage.setItem("lastSelectedCategory", select.value); //store last selected category
   filterQuotes();
-});
+}
+
+// add event listener to select to store selected values
+select.addEventListener("change", selectedCategory);
