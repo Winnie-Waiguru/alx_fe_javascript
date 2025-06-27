@@ -127,7 +127,7 @@ function populateCategories() {
 
   let categoriesArr = [];
 
-  quoteObj.forEach((element) => {
+  quoteObj.map((element) => {
     if (!categoriesArr.includes(element.category)) {
       categoriesArr.push(element.category);
     }
@@ -143,6 +143,8 @@ function populateCategories() {
 
 //function to filter Quotes Based on Selected Category
 function filterQuotes() {
+  // clear quote display container
+  quoteDisplayContainer.innerHTML = "";
   let selectedOption = select.value;
   if (selectedOption === "all") {
     // show all quotw
