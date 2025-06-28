@@ -226,3 +226,34 @@ fetch("https://jsonplaceholder.typicode.com/posts"),
   }
     .then((response) => response.json())
     .then((json) => console.log(json));
+
+//Syncing new quotes
+async function syncQuotes() {
+  try {
+    const response = await fetch("https://jsonplaceholder.typicode.com/posts");
+    const serverQuotes = await response.json();
+
+    // Simulate only 5 quotes for simplicity
+    const trimmedServerQuotes = serverQuotes.slice(0, 5).map((item) => ({
+      text: item.title,
+      category: "Server", // Add a category because your UI needs it
+    }));
+
+    const localQuotes = JSON.parse(localStorage.getItem("quoteItem")) || [];
+
+    // Compare stringified versions
+    if (JSON.stringify(trimmedServerQuotes) !== JSON.stringify(localQuotes)) {
+      console.log("New server quotes found. Syncing now...");
+      localStorage.setItem("quoteItem", JSON.stringify(trimmedServerQuotes));
+      quoteObj = trimmedServerQuotes;
+      populateCategories();
+      filterQuotes();
+    } else {
+      console.log("Server data matches local data. No need to update.");
+    }
+  } catch (error) {
+    console.error("Failed to sync quotes:", error);
+  }
+}
+
+setInterval(syncQuotes, 5000); // sync data every 5 seconds
