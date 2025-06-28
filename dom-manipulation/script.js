@@ -200,3 +200,31 @@ function selectedCategory() {
 
 // add event listener to select to store selected values
 select.addEventListener("change", selectedCategory);
+
+//stimulate server interaction
+function fetchingDataPeriodically() {
+  fetch("https://jsonplaceholder.typicode.com/posts")
+    .then((response) => response.json())
+    .then((json) => {
+      console.clear();
+      console.log("Here are the posts:", json.slice(0, 5));
+    });
+}
+
+setInterval(fetchingDataPeriodically, 5000); //fech data periodically
+
+// Posting data
+fetch("https://jsonplaceholder.typicode.com/posts"),
+  {
+    method: "POST",
+    headers: {
+      "Content-type": "application/json",
+    },
+    body: JSON.stringify({
+      title: "My Post",
+      body: "Hello server!",
+      userId: 1,
+    }),
+  }
+    .then((response) => response.json())
+    .then((json) => console.log(json));
