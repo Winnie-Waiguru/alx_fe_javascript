@@ -202,13 +202,11 @@ function selectedCategory() {
 select.addEventListener("change", selectedCategory);
 
 //stimulate server interaction
-function fetchQuotesFromServer() {
-  fetch("https://jsonplaceholder.typicode.com/posts")
-    .then((response) => response.json())
-    .then((json) => {
-      console.clear();
-      console.log("Here are the posts:", json.slice(0, 5));
-    });
+async function fetchQuotesFromServer() {
+  const response = await fetch("https://jsonplaceholder.typicode.com/posts");
+  const data = await response.json();
+
+  console.log("Here are the posts:", data.slice(0, 5));
 }
 
 setInterval(fetchQuotesFromServer, 5000); //fech data periodically
