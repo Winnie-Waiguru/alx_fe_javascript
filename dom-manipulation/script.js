@@ -216,7 +216,7 @@ fetch("https://jsonplaceholder.typicode.com/posts"),
   {
     method: "POST",
     headers: {
-      "Content-type": "application/json",
+      "Content-Type": "application/json",
     },
     body: JSON.stringify({
       title: "My Post",
