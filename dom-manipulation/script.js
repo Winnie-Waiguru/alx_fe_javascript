@@ -202,7 +202,7 @@ function selectedCategory() {
 select.addEventListener("change", selectedCategory);
 
 //stimulate server interaction
-function fetchingDataPeriodically() {
+function fetchQuotesFromServer() {
   fetch("https://jsonplaceholder.typicode.com/posts")
     .then((response) => response.json())
     .then((json) => {
@@ -211,7 +211,7 @@ function fetchingDataPeriodically() {
     });
 }
 
-setInterval(fetchingDataPeriodically, 5000); //fech data periodically
+setInterval(fetchQuotesFromServer, 5000); //fech data periodically
 
 // Posting data
 fetch("https://jsonplaceholder.typicode.com/posts"),
