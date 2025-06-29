@@ -11,6 +11,10 @@ document.addEventListener("DOMContentLoaded", function () {
 const showQuoteBtn = document.getElementById("newQuote");
 const quoteDisplayContainer = document.getElementById("quoteDisplay");
 const select = document.getElementById("categoryFilter");
+const syncAlert = document.getElementById("syncAlert");
+const syncMessage = document.getElementById("syncMessage");
+const resolveBtn = document.getElementById("resolveConflictBtn");
+
 //When the page loads, try to get the existing quotes from local storage
 let quoteObj = JSON.parse(localStorage.getItem("quoteItem")) || [];
 populateCategories(); // Call populate categories after fetching local storage quotes
@@ -257,3 +261,44 @@ async function syncQuotes() {
 }
 
 setInterval(syncQuotes, 5000); // sync data every 5 seconds
+
+// Conflict resolutions
+let pendingServerQuotes = []; // this holds the new quotes temporarily
+
+async function syncQuotes() {
+  try {
+    const response = await fetch("https://jsonplaceholder.typicode.com/posts");
+    const serverQuotes = await response.json();
+
+    const trimmedQuotes = serverQuotes.slice(0, 5).map((item) => ({
+      text: item.title,
+      category: "Server",
+    }));
+
+    const localQuotes = JSON.parse(localStorage.getItem("quoteItem")) || [];
+
+    if (JSON.stringify(trimmedQuotes) !== JSON.stringify(localQuotes)) {
+      console.log("Conflict detected — server data differs.");
+      pendingServerQuotes = trimmedQuotes; // store temporarily
+      syncAlert.style.display = "block"; // show the message
+      syncMessage.textContent =
+        "New quotes found on the server. Click 'Update Now' to sync.";
+    } else {
+      console.log("Quotes synced with server!");
+      syncAlert.style.display = "none"; // hide message
+    }
+  } catch (error) {
+    console.error("Failed to sync quotes:", error);
+  }
+}
+
+resolveBtn.addEventListener("click", function () {
+  if (pendingServerQuotes.length > 0) {
+    localStorage.setItem("quoteItem", JSON.stringify(pendingServerQuotes));
+    quoteObj = pendingServerQuotes;
+    populateCategories();
+    filterQuotes();
+    syncAlert.style.display = "none"; // hide alert
+    console.log("Quotes updated manually by the user.");
+  }
+});
